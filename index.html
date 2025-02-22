@@ -105,7 +105,7 @@
 <body>
     <div class="movable-window" id="movableWindow">
         <div class="header" id="header">
-            EXP & BXP Tracker [1.2]
+            EXP & BXP Tracker [1.3.1]
             <i class="settings-icon fas fa-cog" id="settingsIcon"></i>
         </div>
         <div class="content" id="content">
@@ -139,25 +139,44 @@
         let startX, startY;
 
         const itemNames = {
-            "exp_token_a|piloting|piloting": "Airline",
-            "exp_token_a|business|business": "Business",
-            "exp_token_a|train|bus": "Bus Driver",
-            "exp_token_a|piloting|cargos": "Cargo Pilot",
-            "exp_token_a|train|train": "Conductor",
-            "exp_token_a|ems|ems": "EMS",
-            "exp_token_a|farming|farming": "Farming",
-            "exp_token_a|ems|fire": "Firefighter",
-            "exp_token_a|farming|fishing": "Fishing",
-            "exp_token_a|trucking|garbage": "Garbage",
-            "exp_token_a|piloting|heli": "Helicopter",
-            "exp_token_a|hunting|skill": "Hunting",
-            "exp_token_a|trucking|mechanic": "Mechanic",
-            "exp_token_a|farming|mining": "Mining",
-            "exp_token_a|player|player": "Player",
-            "exp_token_a|trucking|postop": "PostOP",
-            "exp_token_a|player|racing": "Racing",
-            "exp_token_a|physical|strength": "Strength",
-            "exp_token_a|trucking|trucking": "Trucking"
+            "exp_token|piloting|piloting": "Airline EXP-Token",
+            "exp_token_a|piloting|piloting": "Airline BXP-Token",
+            "exp_token|business|business": "Business EXP-Token",
+            "exp_token_a|business|business": "Business BXP-Token",
+            "exp_token|train|bus": "Bus Driver EXP-Token",
+            "exp_token_a|train|bus": "Bus Driver BXP-Token",
+            "exp_token|piloting|cargos": "Cargo Pilot EXP-Token",
+            "exp_token_a|piloting|cargos": "Cargo Pilot BXP-Token",
+            "exp_token|train|train": "Conductor EXP-Token",
+            "exp_token_a|train|train": "Conductor BXP-Token",
+            "exp_token|ems|ems": "EMS EXP-Token",
+            "exp_token_a|ems|ems": "EMS BXP-Token",
+            "exp_token|farming|farming": "Farming EXP-Token",
+            "exp_token_a|farming|farming": "Farming BXP-Token",
+            "exp_token|ems|fire": "Firefighter EXP-Token",
+            "exp_token_a|ems|fire": "Firefighter BXP-Token",
+            "exp_token|farming|fishing": "Fishing EXP-Token",
+            "exp_token_a|farming|fishing": "Fishing BXP-Token",
+            "exp_token|trucking|garbage": "Garbage EXP-Token",
+            "exp_token_a|trucking|garbage": "Garbage BXP-Token",
+            "exp_token|piloting|heli": "Helicopter EXP-Token",
+            "exp_token_a|piloting|heli": "Helicopter BXP-Token",
+            "exp_token|hunting|skill": "Hunting EXP-Token",
+            "exp_token_a|hunting|skill": "Hunting BXP-Token",
+            "exp_token|trucking|mechanic": "Mechanic EXP-Token",
+            "exp_token_a|trucking|mechanic": "Mechanic BXP-Token",
+            "exp_token|farming|mining": "Mining EXP-Token",
+            "exp_token_a|farming|mining": "Mining BXP-Token",
+            "exp_token|player|player": "Player EXP-Token",
+            "exp_token_a|player|player": "Player BXP-Token",
+            "exp_token|trucking|postop": "PostOP EXP-Token",
+            "exp_token_a|trucking|postop": "PostOP BXP-Token",
+            "exp_token|player|racing": "Racing EXP-Token",
+            "exp_token_a|player|racing": "Racing BXP-Token",
+            "exp_token|physical|strength": "Strength EXP-Token",
+            "exp_token_a|physical|strength": "Strength BXP-Token",
+            "exp_token|trucking|trucking": "Trucking EXP-Token",
+            "exp_token_a|trucking|trucking": "Trucking BXP-Token"
         };
 
         function formatNumber(num) {
@@ -202,22 +221,18 @@
                 const inventoryData = JSON.parse(evt.data.inventory);
                 const combinedData = {};
 
+                // Combine data for exp_token and exp_token_a
                 for (const key in inventoryData) {
-                    const baseKey = key.replace("exp_token_a|", "exp_token|").replace("exp_token", "exp_token_a|");
-                    if (combinedData[baseKey]) {
-                        combinedData[baseKey].amount += inventoryData[key].amount;
-                    } else {
-                        combinedData[baseKey] = { ...inventoryData[key] };
+                    if (itemNames[key]) {
+                        combinedData[key] = inventoryData[key];
                     }
                 }
 
                 let inventoryHTML = '<table class="table"><thead><tr><th>Item</th><th>Amount</th></tr></thead><tbody>';
                 for (const key in combinedData) {
-                    if (key.startsWith("exp_token_a")) {
-                        const itemName = itemNames[key] || key;
-                        const formattedAmount = formatNumber(combinedData[key].amount);
-                        inventoryHTML += `<tr><td>${itemName}</td><td>${formattedAmount}</td></tr>`;
-                    }
+                    const itemName = itemNames[key] || key;
+                    const formattedAmount = formatNumber(combinedData[key].amount);
+                    inventoryHTML += `<tr><td>${itemName}</td><td>${formattedAmount}</td></tr>`;
                 }
                 inventoryHTML += '</tbody></table>';
                 content.innerHTML = inventoryHTML;
