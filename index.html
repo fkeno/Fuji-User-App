@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movable Window App</title>
+    <title>Fuji's EXP & BXP Tracker</title>
+    <!-- Include Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             margin: 0;
@@ -13,8 +15,8 @@
         }
 
         .movable-window {
-            width: 300px;
-            height: 200px;
+            width: 500px;
+            height: 400px;
             background-color: #ffffff;
             border: 2px solid #007bff;
             border-radius: 8px;
@@ -58,11 +60,18 @@
 </head>
 <body>
     <div class="movable-window" id="movableWindow">
-        <div class="header" id="header">Drag me!</div>
+        <div class="header" id="header">EXP & BXP Tracker</div>
         <div class="content">
-            <p>This is a simple movable window. You can drag it around!</p>
+            <p>This is a user-app which can track the exp and bxp you make!</p> 
+            <br>
+            <p>Start setting it up by pressing the button below!</p>
+            <button class="window-button btn btn-primary">Get started! </button>
         </div>
     </div>
+    <!-- Include Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
         const movableWindow = document.getElementById('movableWindow');
         const header = document.getElementById('header');
