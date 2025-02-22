@@ -12,6 +12,7 @@
             padding: 0;
             font-family: Arial, sans-serif;
             background-color: transparent;
+            color: white; /* Dark mode text color */
         }
 
         .movable-window {
@@ -120,6 +121,21 @@
 
         .search-bar {
             margin-bottom: 20px;
+            background-color: #3a3a3a; /* Dark mode search bar background */
+            color: white; /* Dark mode search bar text color */
+            border: 1px solid #007bff;
+        }
+
+        .search-bar::placeholder {
+            color: #cccccc; /* Placeholder text color */
+        }
+
+        .table {
+            color: white; /* Table text color */
+        }
+
+        .table th, .table td {
+            color: white; /* Table header and cell text color */
         }
 
         .feedback-message {
@@ -157,6 +173,24 @@
             background-color: #0056b3 !important;
         }
 
+        .light-mode .search-bar {
+            background-color: white !important;
+            color: black !important;
+            border: 1px solid #007bff !important;
+        }
+
+        .light-mode .search-bar::placeholder {
+            color: #666666 !important; /* Placeholder text color for light mode */
+        }
+
+        .light-mode .table {
+            color: black !important; /* Table text color for light mode */
+        }
+
+        .light-mode .table th, .light-mode .table td {
+            color: black !important; /* Table header and cell text color for light mode */
+        }
+
         .light-mode .feedback-message {
             background-color: black !important;
             color: white !important;
@@ -166,7 +200,7 @@
 <body>
     <div class="movable-window" id="movableWindow">
         <div class="header" id="header">
-            EXP & BXP Tracker [1.3.9]
+            EXP & BXP Tracker [1.4.0]
             <i class="settings-icon fas fa-cog" id="settingsIcon"></i>
         </div>
         <div class="content" id="content">
@@ -181,6 +215,39 @@
                 <input class="form-check-input" type="checkbox" id="darkModeToggle" checked>
                 <label class="form-check-label" for="darkModeToggle">Dark Mode</label>
             </div>
+            
+            <!-- Add this CSS to style the toggle switch -->
+            <style>
+                .form-check-input {
+                    width: 2.5em;
+                    height: 1.5em;
+                    background-color: #007bff;
+                    border-radius: 1.5em;
+                    position: relative;
+                    cursor: pointer;
+                    transition: background-color 0.3s;
+                }
+            
+                .form-check-input:checked {
+                    background-color: #007bff;
+                }
+            
+                .form-check-input::before {
+                    content: '';
+                    position: absolute;
+                    top: 0.25em;
+                    left: 0.25em;
+                    width: 1em;
+                    height: 1em;
+                    background-color: white;
+                    border-radius: 50%;
+                    transition: transform 0.3s;
+                }
+            
+                .form-check-input:checked::before {
+                    transform: translateX(1em);
+                }
+            </style>
             <div class="back-button-container">
                 <button class="window-button btn btn-secondary" id="backButton">Go Back</button>
             </div>
