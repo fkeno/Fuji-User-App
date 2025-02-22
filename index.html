@@ -138,6 +138,32 @@
         let isDragging = false;
         let startX, startY;
 
+        const itemNames = {
+            "exp_token_a|piloting|piloting": "Airline",
+            "exp_token_a|business|business": "Business",
+            "exp_token_a|train|bus": "Bus Driver",
+            "exp_token_a|piloting|cargos": "Cargo Pilot",
+            "exp_token_a|train|train": "Conductor",
+            "exp_token_a|ems|ems": "EMS",
+            "exp_token_a|farming|farming": "Farming",
+            "exp_token_a|ems|fire": "Firefighter",
+            "exp_token_a|farming|fishing": "Fishing",
+            "exp_token_a|trucking|garbage": "Garbage",
+            "exp_token_a|piloting|heli": "Helicopter",
+            "exp_token_a|hunting|skill": "Hunting",
+            "exp_token_a|trucking|mechanic": "Mechanic",
+            "exp_token_a|farming|mining": "Mining",
+            "exp_token_a|player|player": "Player",
+            "exp_token_a|trucking|postop": "PostOP",
+            "exp_token_a|player|racing": "Racing",
+            "exp_token_a|physical|strength": "Strength",
+            "exp_token_a|trucking|trucking": "Trucking"
+        };
+
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
         header.addEventListener('mousedown', (e) => {
             isDragging = true;
             startX = e.clientX - movableWindow.offsetLeft;
@@ -174,10 +200,23 @@
             const evt = event.data;
             if (evt.data && evt.data.inventory) {
                 const inventoryData = JSON.parse(evt.data.inventory);
-                let inventoryHTML = '<table class="table"><thead><tr><th>Item</th><th>Name</th></tr></thead><tbody>';
+                const combinedData = {};
+
                 for (const key in inventoryData) {
+                    const baseKey = key.replace("exp_token_a|", "exp_token|").replace("exp_token", "exp_token_a|");
+                    if (combinedData[baseKey]) {
+                        combinedData[baseKey].amount += inventoryData[key].amount;
+                    } else {
+                        combinedData[baseKey] = { ...inventoryData[key] };
+                    }
+                }
+
+                let inventoryHTML = '<table class="table"><thead><tr><th>Item</th><th>Amount</th></tr></thead><tbody>';
+                for (const key in combinedData) {
                     if (key.startsWith("exp_token_a")) {
-                        inventoryHTML += `<tr><td>${key}</td><td>${inventoryData[key].name}</td><td>${inventoryData[key].amount}</td></tr>`;
+                        const itemName = itemNames[key] || key;
+                        const formattedAmount = formatNumber(combinedData[key].amount);
+                        inventoryHTML += `<tr><td>${itemName}</td><td>${formattedAmount}</td></tr>`;
                     }
                 }
                 inventoryHTML += '</tbody></table>';
