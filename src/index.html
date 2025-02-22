@@ -126,7 +126,7 @@
 <body>
     <div class="movable-window" id="movableWindow">
         <div class="header" id="header">
-            EXP & BXP Tracker [1.3.6]
+            EXP & BXP Tracker [1.3.7]
             <i class="settings-icon fas fa-cog" id="settingsIcon"></i>
         </div>
         <div class="content" id="content">
@@ -169,6 +169,13 @@
         let isDragging = false;
         let startX, startY;
 
+        function hideAllContent() {
+            content.style.display = 'none';
+            settingsContent.style.display = 'none';
+            dashboardContent.style.display = 'none';
+            expBxpContent.style.display = 'none';
+        }
+
         header.addEventListener('mousedown', (e) => {
             isDragging = true;
             startX = e.clientX - movableWindow.offsetLeft;
@@ -187,22 +194,22 @@
         });
 
         settingsIcon.addEventListener('click', () => {
-            content.style.display = 'none';
+            hideAllContent();
             settingsContent.style.display = 'block';
         });
 
         backButton.addEventListener('click', () => {
-            settingsContent.style.display = 'none';
+            hideAllContent();
             content.style.display = 'block';
         });
 
         getStartedButton.addEventListener('click', () => {
-            content.style.display = 'none';
+            hideAllContent();
             dashboardContent.style.display = 'flex';
         });
 
         expBxpButton.addEventListener('click', () => {
-            dashboardContent.style.display = 'none';
+            hideAllContent();
             expBxpContent.style.display = 'block';
             loadExpBxpContent();
         });
@@ -218,7 +225,7 @@
 
             const backToDashboardButton = document.getElementById('backToDashboardButton');
             backToDashboardButton.addEventListener('click', () => {
-                expBxpContent.style.display = 'none';
+                hideAllContent();
                 dashboardContent.style.display = 'flex';
             });
 
