@@ -1,0 +1,115 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa; /* Light background for the dashboard */
+}
+
+.movable-window {
+    width: 500px;
+    height: 400px;
+    background-color: #ffffff;
+    border: 2px solid #007bff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    resize: both;
+    overflow: auto;
+}
+
+.header {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    cursor: move;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.5em; /* Larger text */
+    font-weight: bold; /* Bold text */
+}
+
+.content {
+    padding: 10px;
+    flex-grow: 1;
+}
+
+.window-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.window-button:hover {
+    background-color: #0056b3;
+}
+
+.settings-icon {
+    cursor: pointer;
+}
+
+.settings-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.settings-content .back-button-container {
+    margin-top: auto;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.back-button-container {
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.large-number {
+    font-size: 3em;
+    font-weight: bold;
+}
+
+.small-text {
+    font-size: 1em;
+    margin-left: 10px;
+}
+
+/* Dashboard Styles */
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* Full height */
+}
+
+.dashboard-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 10px;
+    font-size: 1.2em; /* Larger text for buttons */
+}
+
+.dashboard-button:hover {
+    background-color: #0056b3;
+}
