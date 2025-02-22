@@ -177,7 +177,7 @@
                 let inventoryHTML = '<table class="table"><thead><tr><th>Item</th><th>Name</th></tr></thead><tbody>';
                 for (const key in inventoryData) {
                     if (key.startsWith("exp_token_a")) {
-                        inventoryHTML += `<tr><td>${key}</td><td>${inventoryData[key].name}</td><td>${inventoryData[key].quantity}</td></tr>`;
+                        inventoryHTML += `<tr><td>${key}</td><td>${inventoryData[key].name}</td><td>${inventoryData[key].amount}</td></tr>`;
                     }
                 }
                 inventoryHTML += '</tbody></table>';
