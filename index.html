@@ -6,6 +6,8 @@
     <title>Fuji's EXP & BXP Tracker</title>
     <!-- Include Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Include Font Awesome CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <style>
         body {
             margin: 0;
@@ -27,6 +29,8 @@
             transform: translate(-50%, -50%);
             display: flex;
             flex-direction: column;
+            resize: both;
+            overflow: auto;
         }
 
         .header {
@@ -36,6 +40,11 @@
             cursor: move;
             border-top-left-radius: 8px;
             border-top-right-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.5em; /* Larger text */
+            font-weight: bold; /* Bold text */
         }
 
         .content {
@@ -56,25 +65,76 @@
         .window-button:hover {
             background-color: #0056b3;
         }
+
+        .settings-icon {
+            cursor: pointer;
+        }
+
+        .settings-content {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .settings-content .back-button-container {
+            margin-top: auto;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .back-button-container {
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .large-number {
+            font-size: 3em;
+            font-weight: bold;
+        }
+
+        .small-text {
+            font-size: 1em;
+            margin-left: 10px;
+        }
     </style>
 </head>
 <body>
     <div class="movable-window" id="movableWindow">
-        <div class="header" id="header">EXP & BXP Tracker</div>
-        <div class="content">
+        <div class="header" id="header">
+            EXP & BXP Tracker
+            <i class="settings-icon fas fa-cog" id="settingsIcon"></i>
+        </div>
+        <div class="content" id="content">
             <p>This is a user-app which can track the exp and bxp you make!</p> 
             <br>
             <p>Start setting it up by pressing the button below!</p>
-            <button class="window-button btn btn-primary">Get started! </button>
+            <button class="window-button btn btn-primary" id="getStartedButton">Get started!</button>
+        </div>
+        <div class="content settings-content" id="settingsContent" style="display: none;">
+            <p>Settings Page</p>
+            <div class="back-button-container">
+                <button class="window-button btn btn-secondary" id="backButton">Go Back</button>
+            </div>
         </div>
     </div>
     <!-- Include Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Include Font Awesome for the settings icon -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script>
         const movableWindow = document.getElementById('movableWindow');
         const header = document.getElementById('header');
+        const settingsIcon = document.getElementById('settingsIcon');
+        const content = document.getElementById('content');
+        const settingsContent = document.getElementById('settingsContent');
+        const backButton = document.getElementById('backButton');
+        const getStartedButton = document.getElementById('getStartedButton');
         let isDragging = false;
         let startX, startY;
 
@@ -93,6 +153,34 @@
 
         document.addEventListener('mouseup', () => {
             isDragging = false;
+        });
+
+        settingsIcon.addEventListener('click', () => {
+            content.style.display = 'none';
+            settingsContent.style.display = 'block';
+        });
+
+        backButton.addEventListener('click', () => {
+            settingsContent.style.display = 'none';
+            content.style.display = 'block';
+        });
+
+        getStartedButton.addEventListener('click', () => {
+            // Request inventory data
+            window.parent.postMessage({type: "getData"}, "*");
+        });
+
+        window.addEventListener("message", (event) => {
+            const evt = event.data;
+            if (evt.data && evt.data.inventory) {
+                const inventoryData = JSON.parse(evt.data.inventory);
+                let inventoryHTML = '<table class="table"><thead><tr><th>Item</th><th>Name</th></tr></thead><tbody>';
+                for (const key in inventoryData) {
+                    inventoryHTML += `<tr><td>${key}</td><td>${inventoryData[key]}</td></tr>`;
+                }
+                inventoryHTML += '</tbody></table>';
+                content.innerHTML = inventoryHTML;
+            }
         });
     </script>
 </body>
