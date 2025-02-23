@@ -1,465 +1,504 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fuji's EXP & BXP Tracker</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            background-color: transparent;
-            color: white; /* Dark mode text color */
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fuji's EXP & BXP Tracker</title>
+  <link
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    rel="stylesheet"
+  />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: transparent;
+      color: white; /* Dark mode text color */
+    }
 
-        .movable-window {
-            width: 500px;
-            height: 400px;
-            background-color: #3a3a3a; /* Dark mode window background */
-            border: 2px solid #007bff;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            display: flex;
-            flex-direction: column;
-            resize: both;
-            overflow: auto;
-        }
+    .movable-window {
+      width: 500px;
+      height: 400px;
+      background-color: #3a3a3a; /* Dark mode window background */
+      border: 2px solid #007bff;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      flex-direction: column;
+      resize: both;
+      overflow: auto;
+    }
 
-        .header {
-            background-color: #007bff;
-            color: white;
-            padding: 10px;
-            cursor: move;
-            border-top-left-radius: 8px;
-            border-top-right-radius: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 1.5em;
-            font-weight: bold;
-        }
+    .header {
+      background-color: #007bff;
+      color: white;
+      padding: 10px;
+      cursor: move;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1.5em;
+      font-weight: bold;
+    }
 
-        .content {
-            padding: 10px;
-            flex-grow: 1;
-        }
+    .content {
+      padding: 10px;
+      flex-grow: 1;
+    }
 
-        .window-button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
+    .window-button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
 
-        .window-button:hover {
-            background-color: #0056b3;
-        }
+    .window-button:hover {
+      background-color: #0056b3;
+    }
 
-        .settings-icon {
-            cursor: pointer;
-        }
+    .settings-icon {
+      cursor: pointer;
+    }
 
-        .settings-content {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
+    .settings-content {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
 
-        .settings-content .back-button-container {
-            margin-top: auto;
-            padding: 10px;
-            display: flex;
-            justify-content: center;
-        }
+    .settings-content .back-button-container {
+      margin-top: auto;
+      padding: 10px;
+      display: flex;
+      justify-content: center;
+    }
 
-        .back-button-container {
-            position: absolute;
-            bottom: 10px;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-        }
+    .back-button-container {
+      position: absolute;
+      bottom: 10px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
 
-        .large-number {
-            font-size: 3em;
-            font-weight: bold;
-        }
+    .large-number {
+      font-size: 3em;
+      font-weight: bold;
+    }
 
-        .small-text {
-            font-size: 1em;
-            margin-left: 10px;
-        }
+    .small-text {
+      font-size: 1em;
+      margin-left: 10px;
+    }
 
-        .dashboard-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-        }
+    .dashboard-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+    }
 
-        .dashboard-content p {
-            font-size: 2em;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
+    .dashboard-content p {
+      font-size: 2em;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
 
-        .dashboard-content .window-button {
-            width: 80%;
-            margin: 10px 0;
-        }
+    .dashboard-content .window-button {
+      width: 80%;
+      margin: 10px 0;
+    }
 
-        .search-bar {
-            margin-bottom: 20px;
-            background-color: #3a3a3a; /* Dark mode search bar background */
-            color: white; /* Dark mode search bar text color */
-            border: 1px solid #007bff;
-        }
+    .search-bar {
+      margin-bottom: 20px;
+      background-color: #3a3a3a; /* Dark mode search bar background */
+      color: white; /* Dark mode search bar text color */
+      border: 1px solid #007bff;
+    }
 
-        .search-bar::placeholder {
-            color: #cccccc; /* Placeholder text color */
-        }
+    .search-bar::placeholder {
+      color: #cccccc; /* Placeholder text color */
+    }
 
-        .table {
-            color: white; /* Table text color */
-        }
+    .table {
+      color: white; /* Table text color */
+    }
 
-        .table th, .table td {
-            color: white; /* Table header and cell text color */
-        }
+    .table th,
+    .table td {
+      color: white; /* Table header and cell text color */
+    }
 
-        .feedback-message {
-            position: fixed;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: black;
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            display: none;
-        }
+    .feedback-message {
+      position: fixed;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: black;
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+      display: none;
+    }
 
-        .light-mode {
-            background-color: white !important;
-            color: black !important;
-        }
+    .light-mode {
+      background-color: transparent !important;
+      color: black !important;
+    }
 
-        .light-mode .movable-window {
-            background-color: #f8f9fa !important;
-        }
+    .light-mode .movable-window {
+      background-color: #f8f9fa !important;
+    }
 
-        .light-mode .header {
-            background-color: #007bff !important;
-            color: white !important;
-        }
+    .light-mode .header {
+      background-color: #007bff !important;
+      color: white !important;
+    }
 
-        .light-mode .window-button {
-            background-color: #007bff !important;
-            color: white !important;
-        }
+    .light-mode .window-button {
+      background-color: #007bff !important;
+      color: white !important;
+    }
 
-        .light-mode .window-button:hover {
-            background-color: #0056b3 !important;
-        }
+    .light-mode .window-button:hover {
+      background-color: #0056b3 !important;
+    }
 
-        .light-mode .search-bar {
-            background-color: white !important;
-            color: black !important;
-            border: 1px solid #007bff !important;
-        }
+    .light-mode .search-bar {
+      background-color: white !important;
+      color: black !important;
+      border: 1px solid #007bff !important;
+    }
 
-        .light-mode .search-bar::placeholder {
-            color: #666666 !important; /* Placeholder text color for light mode */
-        }
+    .light-mode .search-bar::placeholder {
+      color: #666666 !important; /* Placeholder text color for light mode */
+    }
 
-        .light-mode .table {
-            color: black !important; /* Table text color for light mode */
-        }
+    .light-mode .table {
+      color: black !important; /* Table text color for light mode */
+    }
 
-        .light-mode .table th, .light-mode .table td {
-            color: black !important; /* Table header and cell text color for light mode */
-        }
+    .light-mode .table th,
+    .light-mode .table td {
+      color: black !important; /* Table header and cell text color for light mode */
+    }
 
-        .light-mode .feedback-message {
-            background-color: black !important;
-            color: white !important;
-        }
-    </style>
+    .light-mode .feedback-message {
+      background-color: black !important;
+      color: white !important;
+    }
+
+    /* Custom toggle switch */
+    .form-check-input {
+      display: none;
+    }
+
+    .form-check-label {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .switch-slider {
+      display: inline-block;
+      width: 2.5em;
+      height: 1.5em;
+      background-color: #ccc;
+      border-radius: 1.5em;
+      position: relative;
+      transition: background-color 0.3s;
+      margin-right: 0.5em;
+    }
+
+    .switch-slider::before {
+      content: "";
+      position: absolute;
+      top: 0.25em;
+      left: 0.25em;
+      width: 1em;
+      height: 1em;
+      background-color: white;
+      border-radius: 50%;
+      transition: transform 0.3s;
+    }
+
+    .form-check-input:checked + .form-check-label .switch-slider {
+      background-color: #007bff;
+    }
+
+    .form-check-input:checked + .form-check-label .switch-slider::before {
+      transform: translateX(1em);
+    }
+  </style>
 </head>
 <body>
-    <div class="movable-window" id="movableWindow">
-        <div class="header" id="header">
-            EXP & BXP Tracker [1.4.0]
-            <i class="settings-icon fas fa-cog" id="settingsIcon"></i>
-        </div>
-        <div class="content" id="content">
-            <p>This is a user-app which can track the exp and bxp you make!</p> 
-            <br>
-            <p>Disclaimer: This is still a big WIP! Expect a lot of constant changes!</p>
-            <button class="window-button btn btn-primary" id="getStartedButton">Proceed to Dashboard</button>
-        </div>
-        <div class="content settings-content" id="settingsContent" style="display: none;">
-            <p>Settings Page</p>
-            <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" id="darkModeToggle" checked>
-                <label class="form-check-label" for="darkModeToggle">Dark Mode</label>
-            </div>
-            
-            <!-- Add this CSS to style the toggle switch -->
-            <style>
-                .form-check-input {
-                    width: 2.5em;
-                    height: 1.5em;
-                    background-color: #007bff;
-                    border-radius: 1.5em;
-                    position: relative;
-                    cursor: pointer;
-                    transition: background-color 0.3s;
-                }
-            
-                .form-check-input:checked {
-                    background-color: #007bff;
-                }
-            
-                .form-check-input::before {
-                    content: '';
-                    position: absolute;
-                    top: 0.25em;
-                    left: 0.25em;
-                    width: 1em;
-                    height: 1em;
-                    background-color: white;
-                    border-radius: 50%;
-                    transition: transform 0.3s;
-                }
-            
-                .form-check-input:checked::before {
-                    transform: translateX(1em);
-                }
-            </style>
-            <div class="back-button-container">
-                <button class="window-button btn btn-secondary" id="backButton">Go Back</button>
-            </div>
-        </div>
-        <div class="content dashboard-content" id="dashboardContent" style="display: none;">
-            <p>Dashboard</p>
-            <button class="window-button btn btn-primary" id="expBxpButton">Inventory</button>
-            <button class="window-button btn btn-secondary">WIP-Button 1</button>
-            <button class="window-button btn btn-secondary">WIP-Button 2</button>
-        </div>
-        <div class="content exp-bxp-content" id="expBxpContent" style="display: none;">
-            <!-- EXP/BXP Token Page content will be dynamically inserted here -->
-        </div>
+  <div class="movable-window" id="movableWindow">
+    <div class="header" id="header">
+      EXP & BXP Tracker [1.4.1]
+      <i class="settings-icon fas fa-cog" id="settingsIcon"></i>
     </div>
-    <div class="feedback-message" id="feedbackMessage">Protip: You can scale and move the window!</div>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-    <script>
-        const movableWindow = document.getElementById('movableWindow');
-        const header = document.getElementById('header');
-        const settingsIcon = document.getElementById('settingsIcon');
-        const content = document.getElementById('content');
-        const settingsContent = document.getElementById('settingsContent');
-        const dashboardContent = document.getElementById('dashboardContent');
-        const expBxpContent = document.getElementById('expBxpContent');
-        const backButton = document.getElementById('backButton');
-        const getStartedButton = document.getElementById('getStartedButton');
-        const expBxpButton = document.getElementById('expBxpButton');
-        const feedbackMessage = document.getElementById('feedbackMessage');
-        const darkModeToggle = document.getElementById('darkModeToggle');
-        let isDragging = false;
-        let startX, startY;
+    <div class="content" id="content">
+      <p>This is a user-app which can track the exp and bxp you make!</p>
+      <br />
+      <p>Disclaimer: This is still a big WIP! Expect a lot of constant changes!</p>
+      <button class="window-button btn btn-primary" id="getStartedButton">
+        Proceed to Dashboard
+      </button>
+    </div>
+    <div class="content settings-content" id="settingsContent" style="display: none;">
+      <p>Settings Page</p>
+      <div class="form-check form-switch">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="darkModeToggle"
+          checked
+        />
+        <label class="form-check-label" for="darkModeToggle">
+          <span class="switch-slider"></span>
+          <span class="switch-text">Dark Mode</span>
+        </label>
+      </div>
+      <div class="back-button-container">
+        <button class="window-button btn btn-secondary" id="backButton">
+          Go Back
+        </button>
+      </div>
+    </div>
+    <div class="content dashboard-content" id="dashboardContent" style="display: none;">
+      <p>Dashboard</p>
+      <button class="window-button btn btn-primary" id="expBxpButton">
+        Inventory
+      </button>
+      <button class="window-button btn btn-secondary">WIP-Button 1</button>
+      <button class="window-button btn btn-secondary">WIP-Button 2</button>
+    </div>
+    <div class="content exp-bxp-content" id="expBxpContent" style="display: none;">
+      <!-- EXP/BXP Token Page content will be dynamically inserted here -->
+    </div>
+  </div>
+  <div class="feedback-message" id="feedbackMessage">
+    Protip: You can scale and move the window!
+  </div>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <script>
+    const movableWindow = document.getElementById("movableWindow");
+    const header = document.getElementById("header");
+    const settingsIcon = document.getElementById("settingsIcon");
+    const content = document.getElementById("content");
+    const settingsContent = document.getElementById("settingsContent");
+    const dashboardContent = document.getElementById("dashboardContent");
+    const expBxpContent = document.getElementById("expBxpContent");
+    const backButton = document.getElementById("backButton");
+    const getStartedButton = document.getElementById("getStartedButton");
+    const expBxpButton = document.getElementById("expBxpButton");
+    const feedbackMessage = document.getElementById("feedbackMessage");
+    const darkModeToggle = document.getElementById("darkModeToggle");
+    let isDragging = false;
+    let startX, startY;
 
-        function hideAllContent() {
-            content.style.display = 'none';
-            settingsContent.style.display = 'none';
-            dashboardContent.style.display = 'none';
-            expBxpContent.style.display = 'none';
-        }
+    function hideAllContent() {
+      content.style.display = "none";
+      settingsContent.style.display = "none";
+      dashboardContent.style.display = "none";
+      expBxpContent.style.display = "none";
+    }
 
-        function showFeedbackMessage() {
-            feedbackMessage.style.display = 'block';
-            setTimeout(() => {
-                feedbackMessage.style.display = 'none';
-            }, 5000);
-        }
+    function showFeedbackMessage() {
+      feedbackMessage.style.display = "block";
+      setTimeout(() => {
+        feedbackMessage.style.display = "none";
+      }, 5000);
+    }
 
-        header.addEventListener('mousedown', (e) => {
-            isDragging = true;
-            startX = e.clientX - movableWindow.offsetLeft;
-            startY = e.clientY - movableWindow.offsetTop;
-        });
+    header.addEventListener("mousedown", (e) => {
+      isDragging = true;
+      startX = e.clientX - movableWindow.offsetLeft;
+      startY = e.clientY - movableWindow.offsetTop;
+    });
 
-        document.addEventListener('mousemove', (e) => {
-            if (isDragging) {
-                movableWindow.style.left = `${e.clientX - startX}px`;
-                movableWindow.style.top = `${e.clientY - startY}px`;
+    document.addEventListener("mousemove", (e) => {
+      if (isDragging) {
+        movableWindow.style.left = `${e.clientX - startX}px`;
+        movableWindow.style.top = `${e.clientY - startY}px`;
+      }
+    });
+
+    document.addEventListener("mouseup", () => {
+      isDragging = false;
+    });
+
+    settingsIcon.addEventListener("click", () => {
+      hideAllContent();
+      settingsContent.style.display = "block";
+    });
+
+    backButton.addEventListener("click", () => {
+      hideAllContent();
+      content.style.display = "block";
+    });
+
+    getStartedButton.addEventListener("click", () => {
+      hideAllContent();
+      dashboardContent.style.display = "flex";
+    });
+
+    expBxpButton.addEventListener("click", () => {
+      hideAllContent();
+      expBxpContent.style.display = "block";
+      loadExpBxpContent();
+    });
+
+    darkModeToggle.addEventListener("change", () => {
+      if (darkModeToggle.checked) {
+        document.body.classList.remove("light-mode");
+      } else {
+        document.body.classList.add("light-mode");
+      }
+    });
+
+    function loadExpBxpContent() {
+      const expBxpHTML = `
+        <p>EXP/BXP in Inventory.</p>
+        <input type="text" class="form-control search-bar" id="searchBar" placeholder="Search for items...">
+        <button class="window-button btn btn-secondary" id="backToDashboardButton">Back to Dashboard</button>
+        <div id="expBxpTable"></div>
+      `;
+      expBxpContent.innerHTML = expBxpHTML;
+
+      const backToDashboardButton = document.getElementById("backToDashboardButton");
+      backToDashboardButton.addEventListener("click", () => {
+        hideAllContent();
+        dashboardContent.style.display = "flex";
+      });
+
+      // Load the EXP/BXP Token Page content
+      window.parent.postMessage({ type: "getData" }, "*");
+
+      window.addEventListener("message", (event) => {
+        const evt = event.data;
+        if (evt.data && evt.data.inventory) {
+          const inventoryData = JSON.parse(evt.data.inventory);
+          const combinedData = {};
+
+          // Combine data for exp_token and exp_token_a
+          for (const key in inventoryData) {
+            if (itemNames[key]) {
+              combinedData[key] = inventoryData[key];
             }
-        });
+          }
 
-        document.addEventListener('mouseup', () => {
-            isDragging = false;
-        });
+          // Sort the keys alphabetically
+          const sortedKeys = Object.keys(combinedData).sort((a, b) => {
+            const nameA = itemNames[a].toUpperCase();
+            const nameB = itemNames[b].toUpperCase();
+            return nameA.localeCompare(nameB);
+          });
 
-        settingsIcon.addEventListener('click', () => {
-            hideAllContent();
-            settingsContent.style.display = 'block';
-        });
-
-        backButton.addEventListener('click', () => {
-            hideAllContent();
-            content.style.display = 'block';
-        });
-
-        getStartedButton.addEventListener('click', () => {
-            hideAllContent();
-            dashboardContent.style.display = 'flex';
-        });
-
-        expBxpButton.addEventListener('click', () => {
-            hideAllContent();
-            expBxpContent.style.display = 'block';
-            loadExpBxpContent();
-        });
-
-        darkModeToggle.addEventListener('change', () => {
-            if (darkModeToggle.checked) {
-                document.body.classList.remove('light-mode');
+          function renderTable(filteredKeys) {
+            let inventoryHTML =
+              '<table class="table"><thead><tr><th>Item</th><th>Amount</th></tr></thead><tbody>';
+            if (filteredKeys.length === 0) {
+              inventoryHTML +=
+                '<tr><td colspan="2">Nothing found in inventory</td></tr>';
             } else {
-                document.body.classList.add('light-mode');
+              for (const key of filteredKeys) {
+                const itemName = itemNames[key] || key;
+                const formattedAmount = formatNumber(combinedData[key].amount);
+                inventoryHTML += `<tr><td>${itemName}</td><td>${formattedAmount}</td></tr>`;
+              }
             }
-        });
+            inventoryHTML += "</tbody></table>";
+            document.getElementById("expBxpTable").innerHTML = inventoryHTML;
+          }
 
-        function loadExpBxpContent() {
-            const expBxpHTML = `
-                <p>EXP/BXP in Inventory.</p>
-                <input type="text" class="form-control search-bar" id="searchBar" placeholder="Search for items...">
-                <button class="window-button btn btn-secondary" id="backToDashboardButton">Back to Dashboard</button>
-                <div id="expBxpTable"></div>
-            `;
-            expBxpContent.innerHTML = expBxpHTML;
+          renderTable(sortedKeys);
 
-            const backToDashboardButton = document.getElementById('backToDashboardButton');
-            backToDashboardButton.addEventListener('click', () => {
-                hideAllContent();
-                dashboardContent.style.display = 'flex';
-            });
+          const searchBar = document.getElementById("searchBar");
+          searchBar.addEventListener("input", () => {
+            const searchTerm = searchBar.value.toLowerCase();
+            const filteredKeys = sortedKeys.filter((key) =>
+              itemNames[key].toLowerCase().includes(searchTerm)
+            );
+            renderTable(filteredKeys);
+          });
 
-            // Load the EXP/BXP Token Page content
-            window.parent.postMessage({type: "getData"}, "*");
-
-            window.addEventListener("message", (event) => {
-                const evt = event.data;
-                if (evt.data && evt.data.inventory) {
-                    const inventoryData = JSON.parse(evt.data.inventory);
-                    const combinedData = {};
-
-                    // Combine data for exp_token and exp_token_a
-                    for (const key in inventoryData) {
-                        if (itemNames[key]) {
-                            combinedData[key] = inventoryData[key];
-                        }
-                    }
-
-                    // Sort the keys alphabetically
-                    const sortedKeys = Object.keys(combinedData).sort((a, b) => {
-                        const nameA = itemNames[a].toUpperCase();
-                        const nameB = itemNames[b].toUpperCase();
-                        return nameA.localeCompare(nameB);
-                    });
-
-                    function renderTable(filteredKeys) {
-                        let inventoryHTML = '<table class="table"><thead><tr><th>Item</th><th>Amount</th></tr></thead><tbody>';
-                        if (filteredKeys.length === 0) {
-                            inventoryHTML += '<tr><td colspan="2">Nothing found in inventory</td></tr>';
-                        } else {
-                            for (const key of filteredKeys) {
-                                const itemName = itemNames[key] || key;
-                                const formattedAmount = formatNumber(combinedData[key].amount);
-                                inventoryHTML += `<tr><td>${itemName}</td><td>${formattedAmount}</td></tr>`;
-                            }
-                        }
-                        inventoryHTML += '</tbody></table>';
-                        document.getElementById('expBxpTable').innerHTML = inventoryHTML;
-                    }
-
-                    renderTable(sortedKeys);
-
-                    const searchBar = document.getElementById('searchBar');
-                    searchBar.addEventListener('input', () => {
-                        const searchTerm = searchBar.value.toLowerCase();
-                        const filteredKeys = sortedKeys.filter(key => itemNames[key].toLowerCase().includes(searchTerm));
-                        renderTable(filteredKeys);
-                    });
-
-                    // Retain search term on inventory update
-                    const searchTerm = searchBar.value.toLowerCase();
-                    const filteredKeys = sortedKeys.filter(key => itemNames[key].toLowerCase().includes(searchTerm));
-                    renderTable(filteredKeys);
-                }
-            });
+          // Retain search term on inventory update
+          const searchTerm = searchBar.value.toLowerCase();
+          const filteredKeys = sortedKeys.filter((key) =>
+            itemNames[key].toLowerCase().includes(searchTerm)
+          );
+          renderTable(filteredKeys);
         }
+      });
+    }
 
-        function formatNumber(num) {
-            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        }
+    function formatNumber(num) {
+      return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
 
-        const itemNames = {
-            "exp_token|piloting|piloting": "Airline EXP-Token",
-            "exp_token_a|piloting|piloting": "Airline BXP-Token",
-            "exp_token|business|business": "Business EXP-Token",
-            "exp_token_a|business|business": "Business BXP-Token",
-            "exp_token|train|bus": "Bus Driver EXP-Token",
-            "exp_token_a|train|bus": "Bus Driver BXP-Token",
-            "exp_token|piloting|cargos": "Cargo Pilot EXP-Token",
-            "exp_token_a|piloting|cargos": "Cargo Pilot BXP-Token",
-            "exp_token|train|train": "Conductor EXP-Token",
-            "exp_token_a|train|train": "Conductor BXP-Token",
-            "exp_token|ems|ems": "EMS EXP-Token",
-            "exp_token_a|ems|ems": "EMS BXP-Token",
-            "exp_token|farming|farming": "Farming EXP-Token",
-            "exp_token_a|farming|farming": "Farming BXP-Token",
-            "exp_token|ems|fire": "Firefighter EXP-Token",
-            "exp_token_a|ems|fire": "Firefighter BXP-Token",
-            "exp_token|farming|fishing": "Fishing EXP-Token",
-            "exp_token_a|farming|fishing": "Fishing BXP-Token",
-            "exp_token|trucking|garbage": "Garbage EXP-Token",
-            "exp_token_a|trucking|garbage": "Garbage BXP-Token",
-            "exp_token|piloting|heli": "Helicopter EXP-Token",
-            "exp_token_a|piloting|heli": "Helicopter BXP-Token",
-            "exp_token|hunting|skill": "Hunting EXP-Token",
-            "exp_token_a|hunting|skill": "Hunting BXP-Token",
-            "exp_token|trucking|mechanic": "Mechanic EXP-Token",
-            "exp_token_a|trucking|mechanic": "Mechanic BXP-Token",
-            "exp_token|farming|mining": "Mining EXP-Token",
-            "exp_token_a|farming|mining": "Mining BXP-Token",
-            "exp_token|player|player": "Player EXP-Token",
-            "exp_token_a|player|player": "Player BXP-Token",
-            "exp_token|trucking|postop": "PostOP EXP-Token",
-            "exp_token_a|trucking|postop": "PostOP BXP-Token",
-            "exp_token|player|racing": "Racing EXP-Token",
-            "exp_token_a|player|racing": "Racing BXP-Token",
-            "exp_token|physical|strength": "Strength EXP-Token",
-            "exp_token_a|physical|strength": "Strength BXP-Token",
-            "exp_token|trucking|trucking": "Trucking EXP-Token",
-            "exp_token_a|trucking|trucking": "Trucking BXP-Token"
-        };
+    const itemNames = {
+      "exp_token|piloting|piloting": "Airline EXP-Token",
+      "exp_token_a|piloting|piloting": "Airline BXP-Token",
+      "exp_token|business|business": "Business EXP-Token",
+      "exp_token_a|business|business": "Business BXP-Token",
+      "exp_token|train|bus": "Bus Driver EXP-Token",
+      "exp_token_a|train|bus": "Bus Driver BXP-Token",
+      "exp_token|piloting|cargos": "Cargo Pilot EXP-Token",
+      "exp_token_a|piloting|cargos": "Cargo Pilot BXP-Token",
+      "exp_token|train|train": "Conductor EXP-Token",
+      "exp_token_a|train|train": "Conductor BXP-Token",
+      "exp_token|ems|ems": "EMS EXP-Token",
+      "exp_token_a|ems|ems": "EMS BXP-Token",
+      "exp_token|farming|farming": "Farming EXP-Token",
+      "exp_token_a|farming|farming": "Farming BXP-Token",
+      "exp_token|ems|fire": "Firefighter EXP-Token",
+      "exp_token_a|ems|fire": "Firefighter BXP-Token",
+      "exp_token|farming|fishing": "Fishing EXP-Token",
+      "exp_token_a|farming|fishing": "Fishing BXP-Token",
+      "exp_token|trucking|garbage": "Garbage EXP-Token",
+      "exp_token_a|trucking|garbage": "Garbage BXP-Token",
+      "exp_token|piloting|heli": "Helicopter EXP-Token",
+      "exp_token_a|piloting|heli": "Helicopter BXP-Token",
+      "exp_token|hunting|skill": "Hunting EXP-Token",
+      "exp_token_a|hunting|skill": "Hunting BXP-Token",
+      "exp_token|trucking|mechanic": "Mechanic EXP-Token",
+      "exp_token_a|trucking|mechanic": "Mechanic BXP-Token",
+      "exp_token|farming|mining": "Mining EXP-Token",
+      "exp_token_a|farming|mining": "Mining BXP-Token",
+      "exp_token|player|player": "Player EXP-Token",
+      "exp_token_a|player|player": "Player BXP-Token",
+      "exp_token|trucking|postop": "PostOP EXP-Token",
+      "exp_token_a|trucking|postop": "PostOP BXP-Token",
+      "exp_token|player|racing": "Racing EXP-Token",
+      "exp_token_a|player|racing": "Racing BXP-Token",
+      "exp_token|physical|strength": "Strength EXP-Token",
+      "exp_token_a|physical|strength": "Strength BXP-Token",
+      "exp_token|trucking|trucking": "Trucking EXP-Token",
+      "exp_token_a|trucking|trucking": "Trucking BXP-Token"
+    };
 
-        // Show feedback message on load
-        showFeedbackMessage();
-    </script>
+    // Show feedback message on load
+    showFeedbackMessage();
+  </script>
 </body>
 </html>
