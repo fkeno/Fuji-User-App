@@ -217,6 +217,14 @@ document.addEventListener('DOMContentLoaded', () => {
         "exp_token|farming|mining": "Mining EXP-Token",
         "exp_token_a|farming|mining": "Mining BXP-Token",
         "exp_token|player|player": "Player EXP-Token",
-        "exp_token_a|player|player": "Player BXP-Token"
+        "exp_token_a|player|player": "Player BXP-Token",
+        "exp_token_a|trucking|postop": "PostOP BXP-Token",
+        "exp_token|trucking|postop": "PostOP BXP-Token",
+        "exp_token_a|player|racing": "Racing BXP-Token",
+        "exp_token|player|racing": "Racing BXP-Token",
+        "exp_token|physical|strength": "Strength BXP-Token",
+        "exp_token_a|physical|strength": "Strength BXP-Token",
+        "exp_token|trucking|trucking": "Trucking BXP-Token",
+        "exp_token_a|trucking|trucking": "Trucking BXP-Token"
     };
 });
